@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kutup Projesi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: url('1s.jpg') no-repeat center center/cover;
+            overflow-y: auto; /* Sayfanın aşağı kaymasını sağla */
+            height: 100vh;
+            scroll-behavior: smooth;
+            background-color: #030b4c;
+        }
+
+        .button-container {
+            position: fixed;
+            top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        button:nth-child(1) {
+            background-color: #0077b6;
+            color: white;
+        }
+
+        button:nth-child(1):hover {
+            background-color: #005f8d;
+        }
+
+        button:nth-child(2) {
+            background-color: #d62828;
+            color: white;
+        }
+
+        button:nth-child(2):hover {
+            background-color: #a61e1e;
+        }
+
+        .bubble-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 100px;
+        }
+
+        .bubble {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            background: url('balon.png') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #c8c8c8;
+            text-align: center;
+            font-size: 14px;
+            padding: 10px;
+            cursor: pointer;
+            margin: 50px;
+        }
+
+        /* Aşağı kaydırma butonu */
+        .scroll-down {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 119, 182, 0.8);
+            color: white;
+            font-size: px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.5s;
+            z-index: 1000;
+        }
+
+        .scroll-down:hover {
+            background-color: rgba(0, 95, 141, 0.8);
+        }
+
+        .info-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    max-height: 100vh;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: red;
+        }
+
+        .info-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #infoImage {
+    width: 250px;
+    height: auto;
+    border-radius: 10px;
+    margin-right: 20px;
+    flex-shrink: 0; /* Görselin küçülmesini engeller */
+}
+
+#infoContent {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    text-align: left;
+    padding: 0;
+    max-height: 400px; /* Metin kutusu yüksekliği */
+    overflow-y: auto;  /* Dikey kaydırma çubuğu */
+    flex-grow: 1;      /* Metin kutusu kalan alanı doldurur */
+}
+        .home-button {
+        position: fixed;
+        top: 2px;
+        left: 15px;
+        font-size: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1100;
+    }
+
+    .home-button:hover {
+        opacity: 0.7;
+    }
+    .search-container {
+        position: fixed;
+        top: 10px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+        z-index: 1100;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #searchInput {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 200px;
+    }
+
+    .search-container button {
+        padding: 8px 15px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: #0077b6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .search-container button:hover {
+        background-color: #005f8d;
+    }
+
+    </style>
+</head>
+<body>
+
+    <span class="home-button" onclick="goHome()">🏠︎</span>
+
+    <div class="button-container">
+        <button onclick="goToPage('north')">Kuzey Kutbu</button>
+        <button onclick="goToPage('south')">Güney Kutbu</button>
+        
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Hayvan adı girin...">
+        <button onclick="searchBubble()">Ara</button>
+    </div>
+
+    <div class="bubble-container">
+        <div class="bubble" data-x=22% data-y=7% onclick=" showInfo('Buz Balinası (Balaena mysticetus)', 'Buz balinası, aynı zamanda Grönland balinası olarak da bilinir. Sadece Arktik ve Subarktik sularda yaşayan tek büyük balina türüdür. 20 metre uzunluğa ve 100 tona kadar ağırlığa ulaşılabilmektedir. Aşırı sıcaklıklara uyum sağlamak için 50 cmye kadar kalın bir yağ katmanına sahiptir. Diğer balinalara kıyasla oldukça büyük bir kafaya sahiptir, bu başın 1 metre kalınlığındaki buz tabakasını kırmak için kullanır. Taşra Koyu gri ya da siyah renkte olup, genellikle çenelerinin çevresinde beyaz alanlar bulunur. Büyük bir kafaya sahiptir; vücut yapısının yaklaşık üçte biri kafadan oluşur. Sırt yükü yoktur , bu da ona kalın buzların altında depolama hareket etme avantajı sağlar. Baleen plakaları , 4 metre uzunlukta olup, denizden kril ve plankton süzülmesine yardımcı olur', 'bb.jpg')">Buz Balinası (Balaena mysticetus)</div>
+        <div class="bubble" data-x=-20% data-y=4% onclick="showInfo('Beyaz Balina (Delphinapterus leucas)', 'Genel Bilgiler Beyaz renkte olan, Arktik sularda yaşayan orta boyutlu bir balina türüdür. Beluga Balinası olarak da bilinir. Son derece sosyal hayvanlardır ve büyük sürülerle yaşarlar. Taklit yeteneği yüksektir, sesleri taklit edebilirler. Taşra Yetişkinleri 4-6 metre uzunlukta ve 1-1,5 tonluktur . Yuvarlak kafaları ve esnek boyunları vardır, bu da kafalarını Sağ-sola çevirebilmelerini sağlar. Yüzgeçleri kısa ve geniştir , bu da onların iyi bir manevra kabiliyeti kazandırır. Bebek beyazlaşır ve yaşlandıkça beyazlaşır. Beslenme Diyeti balıkları, kabuklular ve mürekkep balıkları içerir. Ekolokasyon kullanarak avlarını bulurlar. Yaşam Zamanı ve Davranış ortalama 35-50 yıl yaşayabilirler. Çok seslidirler , bu nedenle denizlerin kanaryası olarak da bilinirler. İnsanlarla etkileşime girme durumları yüksektir. Yaşam Alanları Arktik ve Subarktik parçalar yaşarlar. Kış aylarında buzlu sularda , yazın nehir ağızlarına ve daha sıcak sulara göç ederler.', 'bbb.jpg')">Beyaz Balina ( Delphinapterus leucas )        </div>
+        <div class="bubble" data-x=35% data-y=2% onclick="showInfo('Narval (Monodon monoceros)', 'Genel Bilgiler Denizlerin Tek Boynuzlusu olarak bilinen benzersiz bir balina türüdür. Arktik Okyanusunun buzlu sularında yaşar. Özellikle erkek narvallerin uzun, spiral bir dişi vardır. Ekolokasyon yeteneği çok gelişmiştir. Sürü halinde yaşayan sosyal hayvanlardır . Taşra 4-5 metre uzunluğunda ve 800-1.600 kgdır . Erkeklerinin 2-3 metre uzunluğunda sarmal bir dişi bulunur. Derileri koyu gri-mavi tonlarındadır , yaşlandıkça açık renk döner. Sırt yüzgeci yoktur , bu da buzlu sularda daha rahat hareket etmelerini sağlar. Beslenme Balıklar, mürekkep balıkları ve kabuklular ile ilgilenilirler. Dişlerini avlanmada kullanmazlar , avlarını vakum gibi çekerek yutarlar. Yaşam Zamanı ve Davranış ortalama 40-50 yıl yaşayanlar. Derin dalış yapabilirler , 1.500 metreye kadar inebilirler. Dişleriyle suyu analiz ederek çevrelerini algılarlar. Yaşam Alanları Arktik Okyanusu ve Kuzey Kutbunun buzlu sularında yaşarlar. Yaz aylarında Kanada ve Grönlandın kıyılarına göç ederler.', 'nv.jpg')">Narval (Monodon monoceros)</div>
+        <div class="bubble" data-x=-35% data-y=-2% onclick="showInfo('Halkalı fok (Pusa hispida)', 'Boyut: Ortalama olarak 1,5 metre uzunluğunda ve 50-70 kg ağırlığındadırlar. Görünüm: Adlarını, kürklerindeki koyu renkli beneklerin çevresinde bulunan açık gri halkalardan alırlar. Sırt kısımları koyu renklidir, karınları ise gümüş rengindedir. Yağ Tabakası: Soğuk sularda yaşamaya uygun olarak kalın bir yağ tabakasıyla kaplıdırlar. Bu yağ tabakası, onları hem sıcak tutar hem de enerji deposu olarak görev yapar. Yaşam Alanı ve Davranış: Yaşam Alanı: Arktik ve subarktik bölgelerde, özellikle buzlu sularda yaşarlar. Beslenme: Balık, kril ve diğer deniz canlılarıyla beslenirler. Yüzme ve Dalma: Su altında uzun süre kalabilir ve iyi birer yüzücüdürler. Üreme: Dişiler, buz üzerinde tek bir yavru doğururlar. Yavrular, yaklaşık bir ay boyunca anneleri tarafından emzirilir. Adaptasyonlar: Soğuğa Dayanıklılık: Kalın yağ tabakaları ve kürkleri sayesinde soğuk sularda rahatça yaşayabilirler. Su Altında Kalma: Uzun süre nefeslerini tutabilir ve su altında avlanabilirler. Buzda Yaşama: Buz üzerinde doğum yapabilir ve yavrularını büyütebilirler. Halkalı foklar, yaşam alanlarının tahrip olması ve iklim değişikliği gibi tehditlerle karşı karşıyadır. Bu nedenle, korunmaları büyük önem taşımaktadır. Halkalı foklar, Arktik ekosisteminin önemli bir parçasıdır ve bu bölgedeki diğer canlılar için de önemli bir besin kaynağıdırlar. Onların korunması, tüm ekosistemin sağlığı için hayati önem taşır.', 'hf.jpg')">Halkalı fok (Pusa hispida)</div>
+        <div class="bubble" data-x=9% data-y=-5% onclick="showInfo('Sakallı fok (Erignathus barbatus)', ' Arktik Okyanusunda yaşayan bir fok türüdür. İsmini, uzun ve dikkat çekici bıyıklarından alır. Bu bıyıklar, avlanırken duyarga görevi görür. Fiziksel Özellikleri: Boyut: Ortalama 2-2,5 metre uzunluğunda ve 200-350 kg ağırlığındadırlar. Dişiler erkeklerden biraz daha büyüktür. Görünüm: Kürkü grimsi kahverengidir, sırtı daha koyu ve karın kısmı daha açık renktedir. Vücutlarında soluk benekler bulunur. En belirgin özellikleri, uzun ve kalın bıyıklarıdır. Yağ Tabakası: Soğuk sularda yaşamaya uygun olarak kalın bir yağ tabakasıyla kaplıdırlar. Bu yağ tabakası, onları hem sıcak tutar hem de enerji deposu olarak görev yapar. Yaşam Alanı ve Davranış: Yaşam Alanı: Arktik Okyanusunda, özellikle de sığ ve buzlu sularda yaşarlar. Beslenme: Balık, kabuklu deniz ürünleri ve diğer deniz canlılarıyla beslenirler. Yüzme ve Dalma: Su altında uzun süre kalabilir ve iyi birer yüzücüdürler. Üreme: Dişiler, ilkbaharda buz üzerinde tek bir yavru doğururlar. Yavrular, yaklaşık bir ay boyunca anneleri tarafından emzirilir. Adaptasyonlar: Soğuğa Dayanıklılık: Kalın yağ tabakaları ve kürkleri sayesinde soğuk sularda rahatça yaşayabilirler. Su Altında Kalma: Uzun süre nefeslerini tutabilir ve su altında avlanabilirler. Buzda Yaşama: Buz üzerinde doğum yapabilir ve yavrularını büyütebilirler. Bıyıkları sayesinde, buzun altındaki avlarını tespit edebilirler. Koruma Durumu: Sakallı foklar, yaşam alanlarının tahrip olması ve iklim değişikliği gibi tehditlerle karşı karşıyadır. Bu nedenle, korunmaları büyük önem taşımaktadır. Sakallı foklar, Arktik ekosisteminin önemli bir parçasıdır ve bu bölgedeki diğer canlılar için de önemli bir besin kaynağıdırlar. Onların korunması, tüm ekosistemin sağlığı için hayati önem taşır.', 'sk.jpg')">Sakallı fok (Erignathus barbatus)</div>
+        <div class="bubble" data-x=-20% data-y=-5% onclick="showInfo('Kopepodlar (Copepoda)', 'Boyut: Çoğunlukla birkaç milimetre uzunluğundadırlar.Görünüm: Çeşitli şekil ve boyutlarda olabilirlerYaşam Alanı: Tüm okyanuslarda yaşarlar.Beslenme: Planktonlarla beslenirler.Üreme: Hızlı ürerler ve büyük popülasyonlar oluşturabilirler.Ekolojik Rolü: Deniz ekosistemlerinde çok önemli bir yere sahiptirler. Besin zincirinin temelini oluştururlar.', 'b2.jpg')">Kopepodlar (Copepoda)</div>
+        <div class="bubble" data-x=20% data-y=-9% onclick="showInfo('Denizanası (Cnidaria)', 'Boyut: Çeşitli boyutlarda olabilirler.Görünüm: Saydam ve jelimsi bir vücuda sahiptirler.Yaşam Alanı: Tüm okyanuslarda yaşarlar.Beslenme: Planktonlarla ve küçük balıklarla beslenirler.Savunma: Zehirli hücreleri sayesinde avlarını yakalayabilir ve kendilerini savunabilirler.Ekolojik Rolü: Deniz ekosistemlerinde önemli bir yere sahiptirler.', 'ana.jpg')">Denizanası (Cnidaria)</div>
+        <div class="bubble" data-x=6% data-y=-9% onclick="showInfo('Deniz Yıldızları (Asteroidea)', 'Boyut: Çeşitli boyutlarda olabilirler.Görünüm: Genellikle beş kollu bir yapıya sahiptirler.Yaşam Alanı: Tüm okyanuslarda yaşarlar. Beslenme: Çeşitli deniz canlılarıyla beslenirler.Yenilenme: Kopan kolları tekrar büyütebilirler.Ekolojik Rolü: Deniz ekosistemlerinde önemli bir yere sahiptirler.', 'yildiz.jpg')">Deniz Yıldızları (Asteroidea)</div>
+        <div class="bubble" data-x=-35% data-y=-9% onclick="showInfo('Süngerler (Porifera)', 'Boyut: Çeşitli boyutlarda olabilirler.Görünüm: Basit yapılı, deniz tabanına bağlı canlılardır.Yaşam Alanı: Tüm okyanuslarda yaşarlar. Beslenme: Suyu filtreleyerek beslenirler.Üreme: Hem eşeyli hem de eşeysiz üreme yöntemleriyle çoğalabilirler.Ekolojik Rolü: Deniz ekosistemlerinde önemli bir yere sahiptirler.', 'sünger.jpg')">Süngerler (Porifera)</div>
+        <div class="bubble" data-x=22% data-y=-12% onclick="showInfo('Martılar (Laridae)', 'Boyut: Türüne göre değişir.Görünüm: Beyaz veya gri renkli, uzun kanatlı deniz kuşlarıdır.Yaşam Alanı: Tüm dünyada, özellikle kıyı bölgelerinde yaşarlar.Beslenme: Çeşitli besinlerle beslenirler. Uçuş: İyi birer uçucudurlar. Ekolojik Rolü: Deniz ekosistemlerinde önemli bir yere sahiptirler.', 'martı.jpg')">Martılar (Laridae)</div>
+        <div class="bubble" data-x=-25% data-y=-10% onclick="showInfo('Deniz Aygırı (Odobenus rosmarus)', 'Özellikleri: Arktik Okyanusunda yaşayan büyük bir deniz memelisidir. Uzun dişleri ve kalın derileriyle tanınırlar. Ortalama 3 metre uzunluğunda ve 800-1700 kg ağırlığındadırlar.Yaşam Alanı: Arktik Okyanusunda, özellikle de sığ ve buzlu sularda yaşarlar.Davranış: Balık, kabuklu deniz ürünleri ve diğer deniz canlılarıyla beslenirler.', '4f.jpg')">Deniz Aygırı (Odobenus rosmarus)</div>
+        <div class="bubble" data-x=10% data-y=-14% onclick="showInfo('Arktik Morinası (Boreogadus saida)', 'Boyut: Ortalama 15-25 cm uzunluğundadırlar. Görünüm: Gümüş renkli ve uzun bir vücuda sahiptirler. Yaşam Alanı: Arktik Okyanusunda yaşarlar. Davranış:* Beslenme: Planktonlarla beslenirler. Üreme: Büyük sürüler halinde ürerler. Ekolojik Rolü: Arktik ekosisteminde çok önemli bir yere sahiptirler. Birçok hayvan için temel besin kaynağıdırlar.', 'ak.jpg')">Arktik Morinası (Boreogadus saida)</div>
+        <div class="bubble" data-x=29% data-y=-12% onclick="showInfo('Kutup Alabalığı (Salvelinus alpinus)', 'Özellikleri: Soğuk sularda yaşayan bir balık türüdür. Hem tatlı hem de tuzlu suda yaşayabilirler. Ortalama 20-60 cm uzunluğundadırlar. Yaşam Alanı: Arktik ve subarktik bölgelerde yaşarlar. Davranış: Böcekler, kabuklular ve küçük balıklarla beslenirler.', 'ka.jpg')">Kutup Alabalığı (Salvelinus alpinus)</div>
+        <div class="bubble" data-x=-23% data-y=-15% onclick="showInfo('Mavi Balina (Balaenoptera musculus)', 'Mavi balina, gezegenin en büyük hayvanıdır. Uzunluğu 30 metreye , ağırlığı ise 180 tona kadar ulaşabilmektedir. Gök mavisi ile gri arasında bir vücut rengine sahiptir. Okyanusların her yerinde bulunabilir ancak genellikle kutuplara yakın soğuk sularda daha fazla beslenir. Taşra Devasa bir gövdeye sahiptir ve baş kısmı geniş ve yastır. Küçük sırt yüzgeci vücudunun son üçte birlik kısmı yer alır. Büyük ve geniş gruplar ile güçlü yüzücüdür. Akciğerleri tek nefeste 5.000 litreye kadar hava alabiliriz. Beslenme Diyetinin büyük bir kısmı kriller oluşturur. Günde 4 ton kril tüketilebilir. Ağzında baleen plakaları bulunur ve bu plakalar sayesinde küçük avlarını süzerek beslenir. Davranış ve Yaşam Döngüsü Yalnızca yaşayanlar ancak bazen küçük gruplar oluştururlar. Göçmen türdür ve mevsimsel olarak beslenme ve üreme alanları arasında hareket ederler. Ortalama ömürleri 70 - 90 yıl arasında değişir. Ses ve İletişim Mavi balinalar, dünyanın en yüksek ses çıkaran hayvanlarından biridir. Sesleri 188 desibel kadar ulaşılabilir ve çok kilometre öteden duyulabilir. Bu, diğer mavi balinalarla iletişim için kullanılır. Üreme Dişiler 2 - 3 yılda bir doğum yapar. Gebelik süresi 10 – 12 ay sürer. Yeni doğan bir mavi balina 7 - 8 metre uzunluğunda ve 2 - 3 ton kapasiteli doğar. Anne beslenmesiyle beslenen yavru, günlük 200 litre süt içerek hızla büyür. Koruma yüzyılda aşırı avlanma nedeniyle nesli tükenme tehlikesiyle karşı karşıya kalır. Günümüzde IUCN tarafından Tehlikeli Altında (Tehlike Altında) olarak sınıflandırılmaktadır. Uluslararası avcılık yasakları sayesinde yerleri yavaş yavaş toparlanmaktadır.', 'mavi.jpg')">Mavi Balina (Balaenoptera musculus)</div>
+        <div class="bubble" data-x=16% data-y=-13% onclick="showInfo('Katil Balina (Orcinus orka)', 'Genel Bilgiler Katil balinalar, yunusgiller (Delphinidae) ailesinin en büyük üyesidir. Okyanusların en üst katmanı yırtıcıdır ; hiçbir doğal düşman yoktur . 9 metre uzunluğa ve 6 tona kadar ağırlığa ulaşılabilir. Hem kutup sularında hem de tropikal denizlerde yaşayabilirsiniz. Gruplar halinde avlanır ve oldukça sosyal hayvanlardır . Taşra Siyah-beyaz renk deseniyle kolayca tanınır. Sırtında büyük bir üçgen sırt yüzgeci bulunur (erkeklerde 1.8 metreye kadar büyüyebilir). Çok güçlü çeneleri ve büyük, konik dişleri vardır (yaklaşık 48 diş ). Beslenme ve Avlanma Çok geniş bir hizmet yelpazesine sahiptir: balıklar, foklar, deniz kuşları, hatta diğer balinalar ile beslenebilir. Farklı avlanma teknikleri geliştirildi: Fokları buzdan itmek Balıkları baloncuklarla sıkıştırmak Senkronize saldırılar düzenlemek Yaşam Zamanı ve Davranış Dişi katil balinalar 90 yıla kadar , erkekler ise 50-60 yıl yaşayabilir. Aile gruplarında (podlar) yaşayanlar ve çok güçlü sosyal bağlara sahiptirler. İleri düzeyde iletişim yeteneği vardır; bebekler, tıklamalar ve ıslıklarla haberleşirler. Yaşam Alanları Tüm dünya okyanuslarında bulunur ancak Antarktika ve Arktik sularında çok sayıda bulunur . Soğuk sulardaki parçalar foklar ve balinalarla , ılıman kayıtlarda yaşayanlar ise balıklarla ilgileniliyor.', 'bal.jpg')">Katil Balina (Orcinus orka)</div>
+        <div class="bubble" data-x=-32% data-y=-12% onclick="showInfo('Kral Penguen (Aptenodytes patagonicus)', 'Boyut: Yaklaşık 95 cm boyunda ve 15-18 kg ağırlığındadırlar. Görünüm: İmparator penguenlere benzerler ancak daha küçüktürler ve boyun lekeleri daha turuncudur. Yaşam Alanı: Subantarktik adalarda yaşarlar. Beslenme: Balık, kril ve diğer deniz canlılarıyla beslenirler. Üreme: Dişiler tek bir yumurta bırakır ve hem erkekler hem de dişiler kuluçkaya yatar. Ekolojik Rolü: Subantarktik ekosistemlerde önemli bir yere sahiptirler.', 'kpe.jpg')">Kral Penguen (Aptenodytes patagonicus)</div>
+        <div class="bubble" data-x=35% data-y=-12% onclick="showInfo('Gentoo Pengueni (Pygoscelis papua)', 'Boyut: Yaklaşık 80 cm boyunda ve 5-8 kg ağırlığındadırlar. Görünüm: Siyah kafa ve sırt, beyaz karın ve uzun bir kuyruğa sahiptirler. Yaşam Alanı: Subantarktik adalarda yaşarlar. Beslenme: Balık, kril ve diğer deniz canlılarıyla beslenirler. Üreme: Dişiler iki yumurta bırakır ve hem erkekler hem de dişiler kuluçkaya yatar. Ekolojik Rolü: Subantarktik ekosistemlerde önemli bir yere sahiptirler.', 'gp.jpg')">Gentoo Pengueni (Pygoscelis papua)</div>
+        <div class="bubble" data-x=-7% data-y=-9% onclick="showInfo('Kutup Sumrusu (Sterna paradisaea)', 'Boyut: Yaklaşık 35 cm boyunda ve 100-150 gram ağırlığındadırlar. Görünüm: Beyaz vücut, siyah kafa ve kırmızı gagaya sahiptirler. Yaşam Alanı: Arktik ve subarktik bölgelerde ürerler. Beslenme: Balık, kril ve diğer deniz canlılarıyla beslenirler. Göç: Dünyanın en uzun göçünü yaparlar. Ekolojik Rolü: Kutup ekosistemlerinde önemli bir yere sahiptirler.', 'ks.jpg')">Kutup Sumrusu (Sterna paradisaea)</div>
+        <div class="bubble" data-x=-35% data-y=-2% onclick="showInfo('Kutup Fırtına Kuşu (Fulmarus glacialis)', 'Boyut: Yaklaşık 45 cm boyunda ve 500-800 gram ağırlığındadırlar. Görünüm: Açık gri veya beyaz renkli, kalın gagalı deniz kuşlarıdır. Yaşam Alanı: Kuzey Atlantik ve Kuzey Pasifikte yaşarlar. Beslenme: Balık, kril ve diğer deniz canlılarıyla beslenirler. Uçuş: Uzun süre havada kalabilirler. Ekolojik Rolü: Deniz ekosistemlerinde önemli bir yere sahiptirler.', 'kf.jpg')">Kutup Fırtına Kuşu (Fulmarus glacialis)</div>
+    </div>
+    
+    
+
+   
+    <button class="scroll-down" onclick="scrollDown()">▼</button>
+
+    <!-- Bilgi Kutusu -->
+    <div class="info-box" id="infoBox">
+        <span class="close-btn" onclick="closeInfo()">✖</span>
+        <div style="display: flex; flex-direction: row; align-items: flex-start;">
+            <img id="infoImage" src="" alt="Bilgi Görseli">
+            <div>
+                <div class="info-title" id="infoTitle"></div>
+                <div id="infoContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToPage(region) {
+            window.location.href = region === 'north' ? 'Kuzey.html' : 'Güney.html';
+        }
+
+        function showInfo(title, content, imageUrl) {
+            document.getElementById('infoTitle').innerText = title;
+            document.getElementById('infoContent').innerText = content;
+            document.getElementById('infoImage').src = imageUrl;
+            document.getElementById('infoBox').style.visibility = 'visible';
+        }
+
+        function closeInfo() {
+            document.getElementById('infoBox').style.visibility = 'hidden';
+        }
+        document.querySelectorAll('.bubble').forEach(function(bubble) {
+            const x = bubble.getAttribute('data-x');
+            const y = bubble.getAttribute('data-y');
+            bubble.style.left = x;
+            bubble.style.top = y;
+        });
+        function goHome() {
+        window.location.href = 'Anasayfa.html'; // Ana sayfanın dosya adını buraya yaz
+        }
+
+        function scrollDown() {
+            window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+        }
+        function searchBubble() {
+        let searchText = document.getElementById("searchInput").value.toLowerCase(); // Kullanıcının girdiği metni al
+        let bubbles = document.querySelectorAll(".bubble"); // Tüm baloncukları seç
+
+        for (let bubble of bubbles) {
+            if (bubble.innerText.toLowerCase().includes(searchText)) { // Eğer balonun içeriği ile eşleşiyorsa
+                bubble.scrollIntoView({ behavior: "smooth", block: "center" }); // Balona kaydır
+                bubble.style.transform = "scale(1.2)"; // Balonu büyüterek vurgula
+                setTimeout(() => bubble.style.transform = "scale(1)", 2000); // 1 saniye sonra normale döndür
+                return;
+            }
+        }
+
+        alert("Aranan hayvan bulunamadı!"); // Eğer eşleşme yoksa uyarı ver
+    }
+
+    </script>
+
+</body>
+</html>

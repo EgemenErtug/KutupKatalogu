@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kutup Kataloğu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Pacifico&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            min-height: 100vh;
+        }
+
+        .header {
+            font-size: 40px;
+            font-weight: bold;
+            margin: 30px 0;
+            color: #01579b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            display: flex;
+            width: 80%;
+            margin-top: 20px;
+            gap: 20px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .text-section {
+            width: 40%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .text-section h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #00796b;
+        }
+
+        .text-section p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .slideshow-container {
+            width: 50%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Önceki ve sonraki butonlar */
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+        }
+
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        /* Navigasyon Başlık */
+        .nav-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 36px;
+            color: #ff7043;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navigasyon Butonları */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-buttons button {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-buttons button:hover {
+            background-color: #01579b;
+            transform: scale(1.05);
+        }
+
+        .nav-buttons button:active {
+            transform: scale(0.95);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+                width: 90%;
+            }
+
+            .text-section, .slideshow-container {
+                width: 100%;
+            }
+
+            .modal-content {
+                width: 80%;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">Kutup Kataloğu</div>
+
+    <div class="content">
+        <div class="text-section">
+            <h2>Hakkımızda</h2>
+            <p>Bu siteyi, kutup bölgelerinde yaşayan hayvanları tanıtmak ve bu benzersiz ekosistemleri daha geniş kitlelere tanıtmak amacıyla oluşturduk. Amacımız, kutup canlılarının yaşam alanları hakkında farkındalık yaratmak ve doğayı koruma bilincini artırmaktır.</p>
+        </div>
+        
+        <div class="slideshow-container">
+            <button class="prev" onclick="prevSlide()">&#10094;</button>
+            <div class="slides">
+                <img src="mallar.png" alt="Penguen" onclick="openModal(0)">
+                <img src="dem.png" alt="Kutup Ayısı" onclick="openModal(1)">
+                <img src="3.jpg" alt="Deniz Fili" onclick="openModal(2)">
+            </div>
+            <button class="next" onclick="nextSlide()">&#10095;</button>
+        </div>
+    </div>
+
+    <!-- Açılır Modal -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalText"></p>
+        </div>
+    </div>
+
+    <!-- Navigasyon Başlığı -->
+    <div class="nav-title">Araştırmaya Başla</div>
+
+    <!-- Navigasyon Butonları -->
+    <div class="nav-buttons">
+        <button onclick="location.href='kuzey.html'">Kuzey Kutbu</button>
+        <button onclick="location.href='Güney.html'">Güney Kutbu</button>
+    </div>
+
+    <script>
+        let index = 0;
+        const slideData = [
+            { title: "Penguen", text: "Penguenler, soğuk iklimlere mükemmel şekilde adapte olmuş uçamayan kuşlardır. Özellikle Antarktika'da yaşarlar ve sürüler halinde hareket ederler." },
+            { title: "Kutup Ayısı", text: "Kutup ayıları, Arktik bölgelerinde yaşayan devasa etçil memelilerdir. Kalın kürkleri ve yağ tabakaları sayesinde aşırı soğuklara dayanıklıdırlar." },
+            { title: "Deniz Fili", text: "Deniz filleri, büyük ve ağır gövdeleriyle tanınan fok türleridir. Genellikle buzlu sularda avlanırlar ve uzun süre su altında kalabilirler." }
+        ];
+
+        function nextSlide() {
+            const slides = document.querySelector('.slides');
+            index = (index + 1) % slideData.length;
+            slides.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function prevSlide() {
+            const slides = document.querySelector('.slides');
+            index = (index - 1 + slideData.length) % slideData.length;
+            slides.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function openModal(i) {
+            document.getElementById("modalTitle").innerText = slideData[i].title;
+            document.getElementById("modalText").innerText = slideData[i].text;
+            document.getElementById("infoModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("infoModal").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
